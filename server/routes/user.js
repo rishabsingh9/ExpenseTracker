@@ -8,4 +8,6 @@ const router = express.Router();
 
 router.post('/expense/add-user',userController.addUser);
 
+router.get('/expense/get-users',userController.getUsers);
+
 module.exports=router;

@@ -21,3 +21,17 @@ exports.addUser=async(req,res,next)=>{
         })
     }
 }
+
+exports.getUsers=async(req,res,next)=>{
+    try{
+       const data=await User.findAll();
+    
+        res.status(201).json({allUsers:data})
+        }
+        catch(err){
+            console.log(err);
+            res.status(500).json({
+                error:err
+            })
+        }
+}
