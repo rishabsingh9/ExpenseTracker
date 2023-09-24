@@ -19,7 +19,7 @@ const User=sequelize.define('user',{
         
     },
     password:{
-        type:Sequelize.TEXT
+        type:Sequelize.STRING
     }
 });
 

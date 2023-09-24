@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const userRoutes=require('./routes/user');
 
-app.use(userRoutes);
+app.use('/expense',userRoutes);
 
 
 sequelize
