@@ -17,8 +17,10 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const userRoutes=require('./routes/user');
+const expenseRoutes=require('./routes/expense');
 
 app.use('/expense',userRoutes);
+app.use(expenseRoutes)
 
 
 sequelize

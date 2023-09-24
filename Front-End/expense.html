@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container mt-5 border ">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center">Add Expense</h2>
+            <form id="expense-form">
+                <div class="form-group">
+                    <label for="expense">Enter Expense Amount</label>
+                    <input type="number" class="form-control" id="expense" placeholder="Amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" class="form-control" id="description" placeholder="Enter Text" required>
+                </div>
+                <div class="form-group">
+                    <label for="category" class="input-group-text" >Choose a Category:</label>
+                    <select id="categories">
+                        <option value="movie">Movie</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="travel">Travel</option>
+                        <option value="rent">Housing or Rent</option>
+                        <option value="bill">Bills</option>
+                        <option value="insurance">Insurance</option>
+                        <option value="food">Food</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="petrol">Petrol</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-secondary">Add Expense</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS (Optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="expense.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+</body>
+</html>
