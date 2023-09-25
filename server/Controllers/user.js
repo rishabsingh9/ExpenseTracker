@@ -1,6 +1,7 @@
 const { json } = require("body-parser");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt=require('jsonwebtoken');
 
 exports.signUp = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -20,6 +21,10 @@ exports.signUp = async (req, res, next) => {
   }
 };
 
+function generateAccessToken(id,name){
+return jwt.sign({userId:id,name:name},'secretkey')
+}
+
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -32,7 +37,7 @@ exports.login = async (req, res, next) => {
         if (result == true) {
           res
             .status(200)
-            .json({ success: true, message: "User logged in successfully" });
+            .json({ success: true, message: "User logged in successfully" ,token:generateAccessToken(data[0].id,data[0].name)});
         } else {
           return res
             .status(400)
