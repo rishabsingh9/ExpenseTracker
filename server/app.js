@@ -23,10 +23,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const userRoutes=require('./routes/user');
 const expenseRoutes=require('./routes/expense');
 const purchaseRoutes=require('./routes/purchase');
+const premiumFeaturesRoutes=require('./routes/premiumFeatures');
 
 app.use('/expense',userRoutes);
 app.use(expenseRoutes);
 app.use(purchaseRoutes);
+app.use(premiumFeaturesRoutes);
 
 User.hasMany(Expense);
 Expense.belongsTo(User);

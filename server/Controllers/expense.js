@@ -18,6 +18,7 @@ exports.addExpense=async(req,res,next)=>{
 exports.getExpense=async(req,res,next)=>{
     try {
        const data=await Expense.findAll({where:{userId:req.user.id}});
+       //console.log("here",data[0].id);
         res.status(200).json({dt:data}) 
     }
     catch (err) {

@@ -56,3 +56,14 @@ exports.login = async (req, res, next) => {
     });
   }
 };
+exports.getUser=async(req,res,next)=>{
+  try{
+  const data=await User.findOne({where:{id:req.user.id}});
+  res.status(201).json({user:data});
+  }
+  catch(err){
+    return res
+    .status(404)
+    .json({ error:err});
+  }
+}
