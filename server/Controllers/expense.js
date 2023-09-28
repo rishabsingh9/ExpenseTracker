@@ -55,6 +55,8 @@ exports.deleteExpense = async (req, res, next) => {
 
     // Find and delete the expense
     const expense = await Expense.findOne({ where: { id, userId: req.user.id }, transaction });
+    console.log("expense",expense);
+    console.log("amount",expense.expenseAmount);
     if (!expense) {
       // Handle case where the expense does not exist or does not belong to the user
       return res.status(404).json({ error: "Expense not found" });
@@ -67,9 +69,10 @@ exports.deleteExpense = async (req, res, next) => {
 
     // Find the user
     const user = await User.findOne({ where: { id: req.user.id }, transaction });
+    const expenses=Number(user.totalExpense);
 
     // Calculate the new total expense (subtract the deleted expense amount)
-    const expenses = await Expense.sum("expenseAmount", { where: { userId: req.user.id }, transaction });
+    // const expenses = await Expense.sum("expenseAmount", { where: { userId: req.user.id }, transaction });
     const newTotalExpense = (expenses || 0) - deletedExpenseAmount;
 
     // Update the user's total expense

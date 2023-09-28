@@ -21,8 +21,8 @@ exports.signUp = async (req, res, next) => {
   }
 };
 
-function generateAccessToken(id,name){
-return jwt.sign({userId:id,name:name},'secretkey')
+function generateAccessToken(id,name,isPremiumUser){
+return jwt.sign({userId:id,name:name,isPremiumUser},'secretkey')
 }
 
 exports.login = async (req, res, next) => {
@@ -37,7 +37,7 @@ exports.login = async (req, res, next) => {
         if (result == true) {
           res
             .status(200)
-            .json({ success: true, message: "User logged in successfully" ,token:generateAccessToken(data[0].id,data[0].name)});
+            .json({ success: true, message: "User logged in successfully" ,token:generateAccessToken(data[0].id,data[0].name,data[0].isPremiumUser)});
         } else {
           return res
             .status(400)
