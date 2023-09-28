@@ -4,18 +4,33 @@ const sequelize = require("../util/database");
 
 exports.showLeaderboard=async(req,res,next)=>{
     try{
-        const leaderboardOfUsers=await User.findAll({
-            attributes:['id','name',[sequelize.fn('sum',sequelize.col('Expenses.expenseAmount')),'totalExpense']],
-            include:[
-                {
-                    model:Expense,
-                    attributes:[]
-                }
-            ],
-            group:['user.id'],
-            order:[['totalExpense','DESC']]
-        })
-        res.status(200).json(leaderboardOfUsers);
+const users=await User.findAll();
+  const sortedusers = users.sort((a, b) => b.totalExpense - a.totalExpense);
+  res.status(200).json(sortedusers);
+    }
+    catch(err){
+        return res
+    .status(404)
+    .json({ error:err});
+    }
+}
+
+
+    // try{
+    //     const leaderboardOfUsers=await User.findAll({
+    //         attributes:['id','name',[sequelize.fn('sum',sequelize.col('Expenses.expenseAmount')),'totalExpense']],
+    //         include:[
+    //             {
+    //                 model:Expense,
+    //                 attributes:[]
+    //             }
+    //         ],
+    //         group:['user.id'],
+    //         order:[['totalExpense','DESC']]
+    //     })
+    //     res.status(200).json(leaderboardOfUsers);
+
+
     // const users=await User.findAll();
     // const expenses=await Expense.findAll();
     // const totalExpenses=[];
@@ -35,12 +50,12 @@ exports.showLeaderboard=async(req,res,next)=>{
     // const sortedLeaderboard = leaderBoardDetails.sort((a, b) => b.totalExpense - a.totalExpense);
     // console.log(sortedLeaderboard);
     // res.status(201).json(sortedLeaderboard);
-}
-catch(err){
-    console.log('why');
-    return res
-    .status(404)
-    .json({ error:err});
-}
+// 
+//}
 
-}
+//}//}
+// catch(err){
+//     console.log('why');
+//     return res
+//     .status(404)
+//     .json({ error:err});
