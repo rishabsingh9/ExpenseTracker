@@ -1,4 +1,5 @@
 const Expense=require('../models/expense');
+const User = require('../models/user');
 
 exports.addExpense=async(req,res,next)=>{
       const{expenseAmount,description,category}=req.body;  
@@ -39,4 +40,25 @@ exports.deleteExpense=async(req,res,next)=>{
       error: err,
     });
   }
+}
+
+exports.addTotalExpense=async(req,res,next)=>{
+  try{
+  const{expenseAmount}=req.body;
+  const user=await User.findOne({where:{id:req.user.id}});
+  console.log(user);
+  let total=0;
+  if(user.expenseAmount){
+    total=user.expenseAmount;
+  }
+  console.log(total)
+  await user.update({totalExpense:total+expenseAmount});
+  return res.status(202).json({ success: true, message: "totalExpense Updated" });
+}
+catch (err) {
+  console.log(err);
+  res.status(500).json({
+    error: err,
+  });
+}
 }
