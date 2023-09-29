@@ -9,6 +9,7 @@ const sequelize=require('./util/database')
 const User=require('./models/user');
 const Expense=require('./models/expense');
 const Order=require('./models/orders');
+const ForgotPasswordRequest=require('./models/forgotpassword');
 
 
 const app = express();
@@ -24,17 +25,22 @@ const userRoutes=require('./routes/user');
 const expenseRoutes=require('./routes/expense');
 const purchaseRoutes=require('./routes/purchase');
 const premiumFeaturesRoutes=require('./routes/premiumFeatures');
+const resetPasswordRoutes=require('./routes/reset-password');
 
 app.use('/expense',userRoutes);
 app.use(expenseRoutes);
 app.use(purchaseRoutes);
 app.use(premiumFeaturesRoutes);
+app.use('/password',resetPasswordRoutes);
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(ForgotPasswordRequest);
+ForgotPasswordRequest.belongsTo(User);
 
 
 sequelize
