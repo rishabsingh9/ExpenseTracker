@@ -41,6 +41,8 @@ window.addEventListener('DOMContentLoaded',async ()=>{
 .catch(err=>console.log(err));
 
 if(isPremium()){
+  const div=document.getElementById('dwm');
+  div.style.display='block'
   premiumMessage.style.display = 'block';
 
   const premiumuser=document.getElementById('premiumuser');
@@ -48,6 +50,11 @@ if(isPremium()){
   leaderboardbtn.textContent="Show Leaderboard";
   leaderboardbtn.classList.add('leaderboardbtn');
   premiumuser.appendChild(leaderboardbtn);
+
+  const downloadbtn=document.createElement('button');
+  downloadbtn.textContent='Download';
+  downloadbtn.classList.add('downloadbtn');
+  premiumuser.appendChild(downloadbtn);
   leaderboardbtn.addEventListener('click',async()=>{
     try{
       const leaderboard=await axios.get('http://localhost:3000/premium/show-leaderboard',{headers:{"Authorization":token}})
