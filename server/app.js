@@ -10,6 +10,7 @@ const User=require('./models/user');
 const Expense=require('./models/expense');
 const Order=require('./models/orders');
 const ForgotPasswordRequest=require('./models/forgotpassword');
+const Download=require('./models/download');
 
 
 const app = express();
@@ -41,6 +42,9 @@ Order.belongsTo(User);
 
 User.hasMany(ForgotPasswordRequest);
 ForgotPasswordRequest.belongsTo(User);
+
+User.hasMany(Download);
+Download.belongsTo(User);
 
 
 sequelize

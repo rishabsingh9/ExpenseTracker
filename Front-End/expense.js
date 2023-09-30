@@ -55,6 +55,26 @@ if(isPremium()){
   downloadbtn.textContent='Download';
   downloadbtn.classList.add('downloadbtn');
   premiumuser.appendChild(downloadbtn);
+
+  async function download(){
+    const token=localStorage.getItem('token');
+    try {
+      const response=await axios.get('http://localhost:3000/download',{headers:{"Authorization":token}})
+      if(response.status===200){
+        var a=document.createElement('a');
+        a.href=response.data.fileUrl;
+        a.download='myexpense.csv';
+        a.click();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  downloadbtn.addEventListener('click',download);
+
+
+
   leaderboardbtn.addEventListener('click',async()=>{
     try{
       const leaderboard=await axios.get('http://localhost:3000/premium/show-leaderboard',{headers:{"Authorization":token}})
