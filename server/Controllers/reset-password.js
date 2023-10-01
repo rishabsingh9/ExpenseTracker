@@ -7,8 +7,7 @@ const User = require("../models/user");
 const Forgotpassword = require("../models/forgotpassword");
 
 const apiKey = client.authentications["api-key"];
-apiKey.apiKey =
-  "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";
+apiKey.apiKey =process.env.SENDIN_BLUE_API_KEY;
 
 const tranEmailApi = new Sib.TransactionalEmailsApi();
 const sender = {

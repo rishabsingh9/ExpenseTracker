@@ -47,7 +47,7 @@ exports.login = async (req, res, next) => {
     } else {
       return res
         .status(404)
-        .json({ success: false, message: "User Doesn;t Exist" });
+        .json({ success: false, message: "User Doesn't Exist" });
     }
   } catch (err) {
     console.log(err);
