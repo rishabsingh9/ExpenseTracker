@@ -26,19 +26,47 @@ catch(err){
   console.log(err);
 }
 }
+async function getExpenses(page,limit){
+  try {
+    const token=localStorage.getItem('token');
+  const response =await axios.get(`http://localhost:3000/expense/get-expenses?page=${page}&limit=${limit} `,{headers:{"Authorization":token}});
+  console.log(response.data);
+  clearExpenses();
+let len=response.data.expenses.length
+  for(let i=0;i<len;i++){
+    displayUserDetails(response.data.expenses[i]);
+   }
+   showPagination(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+function clearExpenses() {
+  const parent = document.getElementById('ule');
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
 window.addEventListener('DOMContentLoaded',async ()=>{
   const token=localStorage.getItem('token');
-  let flag=false;
-  axios.get('http://localhost:3000/expense/get-expenses',{headers:{"Authorization":token}})
-.then(response=>{
-  console.log(response.data.dt[0])
-  let len=response.data.dt.length
-  for(let i=0;i<len;i++){
-    displayUserDetails(response.data.dt[i]);
-   }
+//   axios.get('http://localhost:3000/expense/get-expenses',{headers:{"Authorization":token}})
+// .then(response=>{
+//   console.log(response.data.dt[0])
+//   let len=response.data.dt.length
+//   for(let i=0;i<len;i++){
+//     displayUserDetails(response.data.dt[i]);
+//    }
 
-})
-.catch(err=>console.log(err));
+// })
+// .catch(err=>console.log(err));
+const page=1;
+let limit=localStorage.getItem('limit');
+if(!limit){
+  limit=5;
+}
+limit=Number(limit);
+getExpenses(page,limit);
+
 
 if(isPremium()){
   const div=document.getElementById('dwm');
@@ -203,4 +231,61 @@ else{
 div.innerHTML = `Name ${obj.name} , TotalExpense ${obj.totalExpense}`;
 }
 parent.appendChild(div);
+}
+
+function showPagination({
+  currentPage,
+      hasNextPage,
+      nextPage,
+      hasPreviousPage,
+      previousPage,
+      lastPage
+}){
+const pagination=document.getElementById("pagination");
+pagination.innerHTML='';
+
+const label = document.createElement('label');
+label.textContent = 'Select Rows:';
+
+// Create a select element
+const select = document.createElement('select');
+select.id="myselect";
+
+// Create an array of option values
+const options = [10, 25, 50, 100];
+
+// Create and append option elements to the select element
+options.forEach(optionValue => {
+  const option = document.createElement('option');
+  option.value = optionValue;
+  option.textContent = optionValue;
+  select.appendChild(option);
+});
+pagination.appendChild(label);
+pagination.appendChild(select);
+
+select.addEventListener('change', () => {
+  const selectedLimit = select.value;
+  // Call getExpenses with the updated limit
+  localStorage.setItem('limit',selectedLimit);
+});
+const limit=localStorage.getItem('limit');
+
+
+if (hasPreviousPage) {
+  const prevButton = document.createElement("button");
+  prevButton.innerHTML = `${previousPage}`;
+  prevButton.addEventListener("click", () => getExpenses(previousPage,limit));
+  pagination.appendChild(prevButton);
+}
+const currButton = document.createElement("button");
+  currButton.innerHTML = `<h3>${currentPage}</h3>`;
+  currButton.addEventListener("click", () => getExpenses(currentPage,limit));
+  pagination.appendChild(currButton);
+if (hasNextPage) {
+  const nextButton = document.createElement("button");
+  nextButton.innerHTML = `${nextPage}`;
+  nextButton.addEventListener("click", () => getExpenses(nextPage,limit));
+  pagination.appendChild(nextButton);
+}
 }

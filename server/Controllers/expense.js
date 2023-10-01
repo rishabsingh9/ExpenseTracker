@@ -69,19 +69,6 @@ exports.downloadExpense=async(req,res,next)=>{
   }
 }
 
-exports.getExpense=async(req,res,next)=>{
-    try {
-       const data=await Expense.findAll({where:{userId:req.user.id}});
-       //console.log("here",data[0].id);
-        res.status(200).json({dt:data}) 
-    }
-    catch (err) {
-        console.log(err);
-    res.status(500).json({
-      error: err,
-    });
-    }
-}
 
 // exports.deleteExpense=async(req,res,next)=>{
 //   const id=req.params.id;
@@ -97,6 +84,31 @@ exports.getExpense=async(req,res,next)=>{
 //     });
 //   }
 // }
+
+
+exports.getExpense=async(req,res,next)=>{
+  let ITEMS_PER_PAGE=Number(req.query.limit);
+  const page=+req.query.page ||1;
+  try {
+    const data=await Expense.findAll({where:{userId:req.user.id},offset:(page-1)*ITEMS_PER_PAGE,limit:ITEMS_PER_PAGE});
+    const total=await Expense.count({where:{userId:req.user.id}});
+    console.log(total,"total");
+    res.status(201).json({
+      expenses:data,
+      currentPage:page,
+      hasNextPage:ITEMS_PER_PAGE*page<total,
+      nextPage:page+1,
+      hasPreviousPage:page>1,
+      previousPage:page-1,
+      lastPage:Math.ceil(total/ITEMS_PER_PAGE)
+    })
+
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({success:false,error:error});
+  }
+}
 exports.deleteExpense = async (req, res, next) => {
   let transaction;
   const id = req.params.id;
