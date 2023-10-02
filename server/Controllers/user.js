@@ -3,15 +3,53 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt=require('jsonwebtoken');
 
+// exports.signUp = async (req, res, next) => {
+//   const { name, email, password } = req.body;
+//   try {
+//     const saltrounds = 10;
+//     bcrypt.hash(password, saltrounds, async (err, hash) => {
+//       console.log(err);
+      
+      
+//       const data = await User.create({ name, email, password: hash });
+
+//       res.status(201).json({ newUsers: data });
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({
+//       error: err,
+//     });
+//   }
+// };
 exports.signUp = async (req, res, next) => {
   const { name, email, password } = req.body;
   try {
     const saltrounds = 10;
     bcrypt.hash(password, saltrounds, async (err, hash) => {
-      console.log(err);
-      const data = await User.create({ name, email, password: hash });
+      if (err) {
+        console.log(err);
+        return res.status(500).json({
+          error: "Error hashing password",
+        });
+      }
 
-      res.status(201).json({ newUsers: data });
+      try {
+        const data = await User.create({ name, email, password: hash });
+        res.status(201).json({ newUsers: data });
+      } catch (err) {
+        // Check if the error is a unique constraint violation
+        if (err.name === 'SequelizeUniqueConstraintError') {
+          return res.status(400).json({
+            error: "Email address already exists. Please use a different email.",
+          });
+        } else {
+          console.log(err);
+          res.status(500).json({
+            error: err,
+          });
+        }
+      }
     });
   } catch (err) {
     console.log(err);
@@ -20,6 +58,7 @@ exports.signUp = async (req, res, next) => {
     });
   }
 };
+
 
 function generateAccessToken(id,name,isPremiumUser){
 return jwt.sign({userId:id,name:name,isPremiumUser},'secretkey')
